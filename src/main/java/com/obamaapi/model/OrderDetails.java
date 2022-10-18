@@ -24,8 +24,8 @@ public class OrderDetails {
     @Column (nullable = false)
     private String status;
 
-    @Column (nullable = false)
-    private String amount;
+//    @Column (nullable = false)
+//    private String amount;
 
     @ManyToOne
     @JsonIgnore
