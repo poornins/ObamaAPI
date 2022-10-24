@@ -1,6 +1,7 @@
 package com.obamaapi.controller;
 
 import com.obamaapi.dto.requests.StaffLogInRequest;
+import com.obamaapi.dto.requests.StaffRegisterRequest;
 import com.obamaapi.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,20 +13,19 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
-//    @PostMapping("/register")
-//    public ResponseEntity signup(@RequestBody PatientSignUpRequest patientSignUpRequest) {
-//
-//        if(authService.checkIfEmailExists(patientSignUpRequest.getEmail())){
-//            return ResponseEntity.badRequest().body("Email Exists");
-//        }
-//        try {
-//            PatientRegisterResponse response = authService.createAccount(patientSignUpRequest);
-//            return ResponseEntity.ok().body(response);
-//        }catch (Exception e){
-//            return ResponseEntity.badRequest().body("Patient Registration Failed");
-//        }
-//
-//    }
+    @PostMapping("/staff/signup")
+    public ResponseEntity signup(@RequestBody StaffRegisterRequest staffRegisterRequest) {
+
+        if(authService.checkifEmailExists(staffRegisterRequest.getEmail())){
+            return ResponseEntity.badRequest().body("Email Exists");
+        }
+
+        if(authService.addStaff(staffRegisterRequest)){
+            return ResponseEntity.ok().body("User Added");
+        }else {
+            return ResponseEntity.badRequest().body("User Signup Failed");
+        }
+    }
 
 //    @PostMapping("/login")
 //    public ResponseEntity<?> login(@RequestBody SignInRequest signInRequest) {
@@ -46,24 +46,24 @@ public class AuthController {
 //        }
 //    }
 
-    @PostMapping("/staff/login")
-    public ResponseEntity<?> patientlogin(@RequestBody StaffLogInRequest staffLogInRequest) {
-        //get object of relavant user
-
-        Integer patientNumber = signInRequest.getPatientNumber();
-        //continue if user exists on provided details
-        if (authService.checkIfIdExists(patientNumber) != null) {
-            try {
-                PatientSignInResponse response = authService.patientlogin(signInRequest);
-                return ResponseEntity.ok(response);
-            }catch (Exception e){
-                return ResponseEntity.badRequest().body("Invalid Password");
-            }
-        } else {
-            return ResponseEntity.badRequest().body("UserName or email Invalid");
-
-        }
-    }
+//    @PostMapping("/staff/login")
+//    public ResponseEntity<?> patientlogin(@RequestBody StaffLogInRequest staffLogInRequest) {
+//        //get object of relavant user
+//
+//        Integer patientNumber = signInRequest.getPatientNumber();
+//        //continue if user exists on provided details
+//        if (authService.checkIfIdExists(patientNumber) != null) {
+//            try {
+//                PatientSignInResponse response = authService.patientlogin(signInRequest);
+//                return ResponseEntity.ok(response);
+//            }catch (Exception e){
+//                return ResponseEntity.badRequest().body("Invalid Password");
+//            }
+//        } else {
+//            return ResponseEntity.badRequest().body("UserName or email Invalid");
+//
+//        }
+//    }
 
 //    @GetMapping("/getPatient/{patientNumber}")
 //    public ResponseEntity getPatientDetailsById(@PathVariable String patientNumber){
