@@ -1,6 +1,7 @@
 package com.obamaapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.obamaapi.enums.StaffAvailability;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,8 +19,8 @@ public class StaffDetails {
     @GeneratedValue
     private long staffId;
 
-    @Column(nullable = false)
-    private String availability;
+    @Enumerated(EnumType.STRING)
+    private StaffAvailability availability;
 
     @Column(nullable = false)
     private String password;

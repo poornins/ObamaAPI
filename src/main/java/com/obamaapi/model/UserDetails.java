@@ -1,6 +1,7 @@
 package com.obamaapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.obamaapi.enums.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,8 +30,8 @@ public class UserDetails {
     @Column(nullable = false)
     private String contactNumber;
 
-    @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Roles role;
 
     @OneToOne(targetEntity = CustomerDetails.class, mappedBy = "userDetails", cascade = CascadeType.ALL)
     @JsonIgnore
