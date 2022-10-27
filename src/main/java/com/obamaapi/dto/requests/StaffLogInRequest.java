@@ -1,7 +1,9 @@
 package com.obamaapi.dto.requests;
 
-public class StaffLogInRequest {
-    private String username;
-    private String password;
+import lombok.Getter;
 
+@Getter
+public class StaffLogInRequest {
+    private String email;
+    private String password;
 }

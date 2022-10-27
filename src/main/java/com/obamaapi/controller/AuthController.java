@@ -2,6 +2,7 @@ package com.obamaapi.controller;
 
 import com.obamaapi.dto.requests.StaffLogInRequest;
 import com.obamaapi.dto.requests.StaffRegisterRequest;
+import com.obamaapi.dto.responses.StaffLoginResponse;
 import com.obamaapi.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,24 +28,24 @@ public class AuthController {
         }
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@RequestBody SignInRequest signInRequest) {
-//        //get object of relavant user
-//
-//        String email = signInRequest.getEmail();
-//        //continue if staff exists on provided details
-//        if (authService.checkIfStaffExists(email)) {
-//            try {
-//                SignInResponse response = authService.login(signInRequest);
-//                return ResponseEntity.ok(response);
-//            }catch (Exception e){
-//                return ResponseEntity.badRequest().body("Invalid Password");
-//            }
-//        } else {
-//            return ResponseEntity.badRequest().body("UserName or email Invalid");
-//
-//        }
-//    }
+    @PostMapping("/staff/login")
+    public ResponseEntity<?> login(@RequestBody StaffLogInRequest staffLogInRequest) {
+        //get object of relavant user
+
+        String email = staffLogInRequest.getEmail();
+        //continue if staff exists on provided details
+        if (authService.checkifEmailExists(email)) {
+            try {
+                StaffLoginResponse response = authService.staffLogin(staffLogInRequest);
+                return ResponseEntity.ok(response);
+            }catch (RuntimeException e){
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+        } else {
+            return ResponseEntity.badRequest().body("UserName or email Invalid");
+
+        }
+    }
 
 //    @PostMapping("/staff/login")
 //    public ResponseEntity<?> patientlogin(@RequestBody StaffLogInRequest staffLogInRequest) {
