@@ -29,11 +29,11 @@ public class StaffRetrieveInvetory {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "item_id")
+    @JoinColumn(name = "itemId")
     InventoryItems inventoryItems;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "staff_id")
+    @JoinColumn(name = "staffId")
     StaffDetails staffDetails;
 }
