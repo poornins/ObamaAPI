@@ -3,9 +3,12 @@ package com.obamaapi.service;
 import com.obamaapi.dto.requests.StaffLogInRequest;
 import com.obamaapi.dto.requests.StaffRegisterRequest;
 import com.obamaapi.dto.responses.StaffLoginResponse;
+import com.obamaapi.enums.Roles;
 import com.obamaapi.enums.StaffAvailability;
+import com.obamaapi.model.CustomerDetails;
 import com.obamaapi.model.StaffDetails;
 import com.obamaapi.model.UserDetails;
+import com.obamaapi.repository.CustomerRepository;
 import com.obamaapi.repository.StaffRepository;
 import com.obamaapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +21,46 @@ public class AuthService {
     private UserRepository userRepository;
     @Autowired
     private StaffRepository staffRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     //return true if email exists
     public boolean checkifEmailExists(String email) {
         return userRepository.findByEmail(email) != null;
+    }
+
+    public boolean checkifCustomerExists(String contactNo) {
+        UserDetails user = userRepository.findByContactNumber(contactNo);
+        if (user == null){
+            return false;
+        }else {
+            try{
+                customerRepository.findByUserDetails_UserId(user.getUserId());
+                return true;
+            }catch (Exception e ){
+                return false;
+            }
+        }
+    }
+
+
+    public long getCustomerUserId(String contactNo) {
+        return userRepository.findByContactNumberAndRole(contactNo,Roles.CUSTOMER).getUserId();
+    }
+
+    public void addCustomer(String contactNo) {
+        CustomerDetails customerDetails= new CustomerDetails();
+        UserDetails userDetails = new UserDetails();
+
+        userDetails.setContactNumber(contactNo);
+        userDetails.setEmail(contactNo);
+        userDetails.setRole(Roles.CUSTOMER);
+
+        customerDetails.setProfileStatus("TENTATIVE");
+        customerDetails.setUserDetails(userDetails);
+
+        userRepository.save(userDetails);
+        customerRepository.save(customerDetails);
     }
 
     //add staff

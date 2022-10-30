@@ -30,7 +30,6 @@ public class AuthController {
 
     @PostMapping("/staff/login")
     public ResponseEntity<?> login(@RequestBody StaffLogInRequest staffLogInRequest) {
-        //get object of relavant user
 
         String email = staffLogInRequest.getEmail();
         //continue if staff exists on provided details
@@ -47,24 +46,13 @@ public class AuthController {
         }
     }
 
-//    @PostMapping("/staff/login")
-//    public ResponseEntity<?> patientlogin(@RequestBody StaffLogInRequest staffLogInRequest) {
-//        //get object of relavant user
-//
-//        Integer patientNumber = signInRequest.getPatientNumber();
-//        //continue if user exists on provided details
-//        if (authService.checkIfIdExists(patientNumber) != null) {
-//            try {
-//                PatientSignInResponse response = authService.patientlogin(signInRequest);
-//                return ResponseEntity.ok(response);
-//            }catch (Exception e){
-//                return ResponseEntity.badRequest().body("Invalid Password");
-//            }
-//        } else {
-//            return ResponseEntity.badRequest().body("UserName or email Invalid");
-//
-//        }
-//    }
+    @GetMapping("/customer/login/{contactNo}")
+    public ResponseEntity<?> customerLogin(@PathVariable String contactNo) {
+        if (!authService.checkifCustomerExists(contactNo)) {
+            authService.addCustomer(contactNo);
+        }
+        return ResponseEntity.ok().body(authService.getCustomerUserId(contactNo));
+    }
 
 //    @GetMapping("/getPatient/{patientNumber}")
 //    public ResponseEntity getPatientDetailsById(@PathVariable String patientNumber){
