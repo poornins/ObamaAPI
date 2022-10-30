@@ -17,7 +17,7 @@ public class CustomerDetails {
     @GeneratedValue
     private long customerId;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String address;
 
     @Column(nullable = false)

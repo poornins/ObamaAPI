@@ -1,6 +1,7 @@
 package com.obamaapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.obamaapi.enums.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,8 @@ public class OrderDetails {
     @Column(nullable = false)
     private int placementId;
 
-    @Column (nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @Column (nullable = false)
     private String amount;

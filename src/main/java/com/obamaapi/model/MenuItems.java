@@ -1,6 +1,8 @@
 package com.obamaapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.obamaapi.enums.MenuAvailability;
+import com.obamaapi.enums.MenuType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,11 +26,11 @@ public class MenuItems {
     @Column (nullable = false)
     private String price;
 
-    @Column (nullable = false)
-    private String availability;
+    @Enumerated (EnumType.STRING)
+    private MenuAvailability availability;
 
-    @Column (nullable = false)
-    private String type;
+    @Enumerated (EnumType.STRING)
+    private MenuType type;
 
     @Column (nullable = false)
     private String imageUrl;
