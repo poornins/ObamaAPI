@@ -1,6 +1,7 @@
 package com.obamaapi.controller;
 
 import com.obamaapi.dto.requests.AddMenuRequest;
+import com.obamaapi.dto.requests.AddOrderMenuRequest;
 import com.obamaapi.dto.requests.AddOrderRequest;
 import com.obamaapi.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,12 @@ public class OrderController {
     public ResponseEntity placeOrder(@RequestBody AddOrderRequest addOrderRequest){
             orderService.placeOrder(addOrderRequest);
             return ResponseEntity.ok().body("Order Added");
+    }
+
+    @PostMapping("/add/menu instance")
+    public ResponseEntity addOrderMenu(@RequestBody AddOrderMenuRequest addOrderMenuRequest){
+        orderService.addOrderMenu(addOrderMenuRequest);
+        return ResponseEntity.ok().body("Menu-Order Added");
     }
 
 }

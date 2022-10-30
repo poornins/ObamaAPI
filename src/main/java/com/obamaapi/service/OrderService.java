@@ -1,14 +1,18 @@
 package com.obamaapi.service;
 
 import com.obamaapi.dto.requests.AddMenuRequest;
+import com.obamaapi.dto.requests.AddOrderMenuRequest;
 import com.obamaapi.dto.requests.AddOrderRequest;
+import com.obamaapi.dto.requests.RequestMenuInstance;
 import com.obamaapi.enums.MenuAvailability;
 import com.obamaapi.enums.OrderStatus;
 import com.obamaapi.model.CustomerDetails;
 import com.obamaapi.model.MenuItems;
 import com.obamaapi.model.OrderDetails;
+import com.obamaapi.model.OrderIncludesMenu;
 import com.obamaapi.repository.CustomerRepository;
 import com.obamaapi.repository.MenuRepository;
+import com.obamaapi.repository.OrderIncludesMenuRepository;
 import com.obamaapi.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +30,9 @@ public class OrderService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private OrderIncludesMenuRepository orderIncludesMenuRepository;
 
     public boolean checkIfMenuNameExists(String menuName){
         if(menuRepository.findByMenuName(menuName) != null){
@@ -60,11 +67,28 @@ public class OrderService {
         OrderDetails orderDetails = new OrderDetails();
         CustomerDetails customerDetails;
 
-        customerDetails = customerRepository.findByUserDetailsUserId(addOrderRequest.getUserId());
+        customerDetails = customerRepository.findByUserDetails_UserId(addOrderRequest.getUserId());
         orderDetails.setPlacementId(addOrderRequest.getPlacementId());
         orderDetails.setAmount(addOrderRequest.getAmount());
         orderDetails.setStatus(OrderStatus.PLACED);
         orderDetails.setCustomerDetails(customerDetails);
         orderRepository.save(orderDetails);
+    }
+
+    public void addOrderMenu(AddOrderMenuRequest addOrderMenuRequest){
+        OrderDetails orderDetails = orderRepository.findByOrderId(addOrderMenuRequest.getOrderId());
+
+        for (RequestMenuInstance requestMenuInstance : addOrderMenuRequest.getRequestMenuInstances()){
+
+            MenuItems menuItems = menuRepository.findByMenuId(requestMenuInstance.getMenuId());
+
+            OrderIncludesMenu orderMenu = new OrderIncludesMenu();
+            orderMenu.setMenuItems(menuItems);
+            orderMenu.setQuantity(requestMenuInstance.getQuantity());
+            orderMenu.setOrderDetails(orderDetails);
+
+            orderIncludesMenuRepository.save(orderMenu);
+        }
+
     }
 }
