@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InventoryService {
@@ -87,5 +88,16 @@ public class InventoryService {
             retriveInventoryRepository.save(retrieveInventory);
             return item;
         }
+    }
+
+    public InventoryItems getInventoryItem(Long itemId) {
+        return inventoryRepository.findByItemId(itemId);
+    }
+
+    public  List<InventoryItems> searchInventoryItem(Optional<String> query) {
+        if(query.isPresent())
+        return inventoryRepository.findAllByItemNameIsContaining(query.get());
+        else
+        return inventoryRepository.findAll();
     }
 }
