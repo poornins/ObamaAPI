@@ -21,7 +21,10 @@ public class InventoryItems {
     private String itemName;
 
     @Column (nullable = false)
-    private int quantity;
+    private float quantity;
+
+    @Column (nullable = false)
+    private float reorderLevel;
 
     @OneToMany(targetEntity = StaffAddInventory.class, mappedBy = "inventoryItems", cascade = CascadeType.ALL)
     @JsonIgnore
