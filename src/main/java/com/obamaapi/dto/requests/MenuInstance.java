@@ -1,9 +1,11 @@
 package com.obamaapi.dto.requests;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-public class RequestMenuInstance {
+@Setter
+public class MenuInstance {
     private long menuId;
     private int quantity;
 }
