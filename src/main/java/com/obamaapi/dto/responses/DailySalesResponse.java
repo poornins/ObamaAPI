@@ -10,5 +10,6 @@ import java.util.List;
 @Getter
 public class DailySalesResponse {
     private String date;
+    private int total;
     private List<SalesInstance> salesInstances;
 }
