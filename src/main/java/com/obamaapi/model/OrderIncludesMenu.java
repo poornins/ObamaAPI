@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,9 +23,7 @@ public class OrderIncludesMenu {
     @Column(nullable = false)
     private int quantity;
 
-    @Column
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "yyyy-dd-MM")
+    @CreationTimestamp
     private Date date;
 
     @ManyToOne

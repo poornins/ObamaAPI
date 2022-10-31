@@ -68,6 +68,30 @@ public class OrderService {
             for (OrderIncludesMenu orderIncludesMenu:orderIncludesMenuList){
                 MenuInstance menuInstance=new MenuInstance();
                 menuInstance.setMenuId(orderIncludesMenu.getMenuItems().getMenuId());
+                menuInstance.setMenuName(orderIncludesMenu.getMenuItems().getMenuName());
+                menuInstance.setQuantity(orderIncludesMenu.getQuantity());
+
+                menuInstances.add(menuInstance);
+            }
+            placedOrderResponse.setMenuInstances(menuInstances);
+            placedOrderResponseList.add(placedOrderResponse);
+        }
+        return placedOrderResponseList;
+    }
+
+    public List<PlacedOrderResponse> getAccepted(){
+        List<OrderDetails> orderDetailsList=orderRepository.findAllByStatusOrStatus(OrderStatus.ACCEPTED,OrderStatus.PREPARED);
+        List<PlacedOrderResponse> placedOrderResponseList=new ArrayList<>();
+
+        for (OrderDetails order: orderDetailsList){
+            PlacedOrderResponse placedOrderResponse=new PlacedOrderResponse();
+            placedOrderResponse.setOrderId(order.getOrderId());
+            List<OrderIncludesMenu> orderIncludesMenuList=orderIncludesMenuRepository.findAllByOrderDetails_OrderId(order.getOrderId());
+            List<MenuInstance> menuInstances=new ArrayList<>();
+            for (OrderIncludesMenu orderIncludesMenu:orderIncludesMenuList){
+                MenuInstance menuInstance=new MenuInstance();
+                menuInstance.setMenuId(orderIncludesMenu.getMenuItems().getMenuId());
+                menuInstance.setMenuName(orderIncludesMenu.getMenuItems().getMenuName());
                 menuInstance.setQuantity(orderIncludesMenu.getQuantity());
 
                 menuInstances.add(menuInstance);
@@ -97,6 +121,18 @@ public class OrderService {
         orderDetails.setAmount(addOrderRequest.getAmount());
         orderDetails.setStatus(OrderStatus.PLACED);
         orderDetails.setCustomerDetails(customerDetails);
+        orderRepository.save(orderDetails);
+    }
+
+    public void acceptOrder(long orderId){
+        OrderDetails orderDetails = orderRepository.findByOrderId(orderId);
+        orderDetails.setStatus(OrderStatus.ACCEPTED);
+        orderRepository.save(orderDetails);
+    }
+
+    public void prepareOrder(long orderId){
+        OrderDetails orderDetails = orderRepository.findByOrderId(orderId);
+        orderDetails.setStatus(OrderStatus.PREPARED);
         orderRepository.save(orderDetails);
     }
 

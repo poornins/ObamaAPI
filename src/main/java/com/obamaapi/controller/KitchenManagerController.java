@@ -5,9 +5,7 @@ import com.obamaapi.model.MenuItems;
 import com.obamaapi.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,8 +23,34 @@ public class KitchenManagerController {
              ) {
             System.out.println(placedOrderResponse.getOrderId());
         }
-        if (placedOrderResponses == null){
+        if (placedOrderResponses.isEmpty()){
             return ResponseEntity.badRequest().body("No data");
         }else return ResponseEntity.ok().body(placedOrderResponses);
+    }
+
+    @PutMapping("/order/accept/{orderId}")
+    public ResponseEntity<?> acceptOrder(@PathVariable long orderId){
+
+        orderService.acceptOrder(orderId);
+        return ResponseEntity.ok().body("Order Accepted");
+    }
+
+    @PutMapping("/order/prepare/{orderId}")
+    public ResponseEntity<?> preparedOrder(@PathVariable long orderId){
+
+        orderService.prepareOrder(orderId);
+        return ResponseEntity.ok().body("Order Prepared");
+    }
+
+    @GetMapping("/order/accepted")
+    public ResponseEntity<?> getAcceptedOrders(){
+        List<PlacedOrderResponse> acceptedOrderResponses = orderService.getAccepted();
+        for (PlacedOrderResponse placedOrderResponse:acceptedOrderResponses
+        ) {
+            System.out.println(placedOrderResponse.getOrderId());
+        }
+        if (acceptedOrderResponses.isEmpty()){
+            return ResponseEntity.badRequest().body("No data");
+        }else return ResponseEntity.ok().body(acceptedOrderResponses);
     }
 }
