@@ -25,7 +25,7 @@ public class StaffRetrieveInvetory {
     private Date date;
 
     @Column(nullable = false)
-    private int retrievedQuantity;
+    private float retrievedQuantity;
 
     @ManyToOne
     @JsonIgnore

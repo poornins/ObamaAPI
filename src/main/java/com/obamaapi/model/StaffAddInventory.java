@@ -25,7 +25,7 @@ public class StaffAddInventory {
     private Date date;
 
     @Column(nullable = false)
-    private int addedQuantity;
+    private float addedQuantity;
 
     @ManyToOne
     @JsonIgnore
