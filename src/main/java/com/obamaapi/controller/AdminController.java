@@ -3,10 +3,13 @@ package com.obamaapi.controller;
 import com.obamaapi.dto.requests.AddMenuRequest;
 import com.obamaapi.model.MenuItems;
 import com.obamaapi.service.OrderService;
+import com.obamaapi.service.SalesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -15,6 +18,9 @@ public class AdminController {
 
     @Autowired
     OrderService orderService;
+
+    @Autowired
+    SalesService salesService;
 
     @PostMapping("/menu/add")
     public ResponseEntity addMenu(@RequestBody AddMenuRequest addMenuRequest){
@@ -45,4 +51,11 @@ public class AdminController {
         }
     }
 
+//    -----------------REPORTS----------------------------------
+    @GetMapping("/SalesReport/Daily/{date}")
+    public ResponseEntity getSalesForDate(@PathVariable String date){
+
+       return ResponseEntity.ok().body(salesService.getDailySales(date));
+
+    }
 }
