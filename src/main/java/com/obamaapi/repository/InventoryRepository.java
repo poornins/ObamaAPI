@@ -3,6 +3,7 @@ package com.obamaapi.repository;
 import com.obamaapi.model.CustomerDetails;
 import com.obamaapi.model.InventoryItems;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

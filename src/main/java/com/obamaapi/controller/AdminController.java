@@ -77,10 +77,10 @@ public class AdminController {
 
 //    ----------------------Stores Reports----------------------------------
 
-    @GetMapping("/salesReport/daily/{fromDate}/{toDate}")
-    public ResponseEntity getStoresReportPeriod(@PathVariable String fromDate,@PathVariable String toDate){
+    @GetMapping("/storeReport/daily")
+    public ResponseEntity getStoresReport(){
 
-        return ResponseEntity.ok().body(salesService.getSalesPeriod(fromDate,toDate));
+        return ResponseEntity.ok().body(salesService.getDailyStores());
 
     }
 }
