@@ -14,6 +14,7 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
+    //Staff add
     @PostMapping("/staff/signup")
     public ResponseEntity signup(@RequestBody StaffRegisterRequest staffRegisterRequest) {
 
