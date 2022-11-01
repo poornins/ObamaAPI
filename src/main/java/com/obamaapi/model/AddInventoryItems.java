@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,27 +14,29 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class StaffRetrieveInvetory {
+public class AddInventoryItems {
 
     @Id
     @GeneratedValue
-    private long retreiveId;
+    private long addInventoryId;
 
-    @Column
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "yyyy-dd-MM")
+    @CreationTimestamp
     private Date date;
 
     @Column(nullable = false)
-    private float retrievedQuantity;
+    private float addedQuantity;
+
+    @Column(nullable = false)
+    private float unitPrice;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "itemId")
+    @JoinColumn(name = "item_id")
     InventoryItems inventoryItems;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "staffId")
+    @JoinColumn(name = "staff_id")
     StaffDetails staffDetails;
+
 }

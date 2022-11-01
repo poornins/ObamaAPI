@@ -29,11 +29,11 @@ public class StaffDetails {
     @JsonIgnore
     private UserDetails userDetails;
 
-    @OneToMany(targetEntity = StaffAddInventory.class, mappedBy = "staffDetails", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = AddInventoryItems.class, mappedBy = "staffDetails", cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<StaffAddInventory> staffAddInventories;
+    private Set<AddInventoryItems> staffAddInventories;
 
-    @OneToMany(targetEntity = StaffRetrieveInvetory.class, mappedBy = "staffDetails", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = RetrieveInvetory.class, mappedBy = "staffDetails", cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<StaffRetrieveInvetory> staffRetrieveInvetories;
+    private Set<RetrieveInvetory> staffRetrieveInvetories;
 }
