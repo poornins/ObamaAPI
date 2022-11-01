@@ -116,11 +116,14 @@ public class OrderService {
         OrderDetails orderDetails = new OrderDetails();
         CustomerDetails customerDetails;
 
+        //get customer details on user ID
         customerDetails = customerRepository.findByUserDetails_UserId(addOrderRequest.getUserId());
+
         orderDetails.setPlacementId(addOrderRequest.getPlacementId());
         orderDetails.setAmount(addOrderRequest.getAmount());
         orderDetails.setStatus(OrderStatus.PLACED);
         orderDetails.setCustomerDetails(customerDetails);
+        //save in the database
         orderRepository.save(orderDetails);
     }
 

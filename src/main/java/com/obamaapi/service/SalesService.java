@@ -2,6 +2,7 @@ package com.obamaapi.service;
 
 import com.obamaapi.dto.responses.DailySalesResponse;
 import com.obamaapi.dto.responses.SalesInstance;
+import com.obamaapi.dto.responses.SalesPeriodResponse;
 import com.obamaapi.model.MenuItems;
 import com.obamaapi.repository.CustomerRepository;
 import com.obamaapi.repository.MenuRepository;
@@ -50,5 +51,31 @@ public class SalesService {
             dailySalesResponse.setSalesInstances(salesInstanceList);
             dailySalesResponse.setTotal(total);
         return dailySalesResponse;
+    }
+
+    public SalesPeriodResponse getSalesPeriod(String fromDate,String toDate){
+        int total = 0;
+        // create sales response
+        SalesPeriodResponse salesPeriodResponse = new SalesPeriodResponse();
+        salesPeriodResponse.setFromDate(fromDate);
+        salesPeriodResponse.setToDate(toDate);
+        List<SalesInstance> salesInstanceList = new ArrayList<>();
+
+        List<OrderIncludesMenuRepository.DailyInstance> dailyInstances = orderIncludesMenuRepository.findSumofMenuSalesPeriod(fromDate, toDate);
+        for (OrderIncludesMenuRepository.DailyInstance dailyInstance: dailyInstances){
+            SalesInstance salesInstance = new SalesInstance();
+
+            MenuItems menuItem = menuRepository.findByMenuId(dailyInstance.getItemNo());
+            salesInstance.setItemNo(dailyInstance.getItemNo());
+            salesInstance.setQuantity(dailyInstance.getQuantity());
+            salesInstance.setMenuName(menuItem.getMenuName());
+            salesInstance.setTotal(dailyInstance.getQuantity()*Integer.parseInt(menuItem.getPrice()));
+            salesInstance.setUnitPrice(menuItem.getPrice());
+            salesInstanceList.add(salesInstance);
+            total = total + dailyInstance.getQuantity()*Integer.parseInt(menuItem.getPrice());
+        }
+        salesPeriodResponse.setSalesInstances(salesInstanceList);
+        salesPeriodResponse.setTotal(total);
+        return salesPeriodResponse;
     }
 }

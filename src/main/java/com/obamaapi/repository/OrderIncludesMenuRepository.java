@@ -11,6 +11,9 @@ public interface OrderIncludesMenuRepository extends JpaRepository<OrderIncludes
     @Query(value = "SELECT menu_id AS 'itemNo', SUM(quantity) AS 'quantity' FROM `order_includes_menu` WHERE DATE(date)= ?1 GROUP BY menu_id;" , nativeQuery = true)
     List<DailyInstance> findSumofMenuSales(String date);
 
+    @Query(value = "SELECT menu_id AS 'itemNo', SUM(quantity) AS 'quantity' FROM `order_includes_menu` WHERE DATE(date) BETWEEN ?1 AND ?2 GROUP BY menu_id;" , nativeQuery = true)
+    List<DailyInstance> findSumofMenuSalesPeriod(String fromDate,String toDate);
+
     interface DailyInstance{
         long getItemNo();
         int getQuantity();
