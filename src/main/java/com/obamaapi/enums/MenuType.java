@@ -2,5 +2,7 @@ package com.obamaapi.enums;
 
 public enum MenuType {
     BEVERAGES,
-    MAIN_COURSE
+    RICE_SPECIALITIES,
+    DESSERTS,
+    KOTHTHU
 }

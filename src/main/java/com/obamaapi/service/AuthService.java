@@ -75,7 +75,7 @@ public class AuthService {
             user.setLastName(staffRegisterRequest.getLastName());
             user.setRole(staffRegisterRequest.getRole());
 
-            staff.setAvailability(StaffAvailability.NOT_AVAILABLE);
+            staff.setAvailability(StaffAvailability.AVAILABLE);
             staff.setPassword(staffRegisterRequest.getPassword());
             staff.setUserDetails(user);
 
