@@ -21,6 +21,7 @@ public class InventoryController {
     @Autowired
     InventoryService inventoryService;
 
+    //add item details to database
     @PostMapping("/item")
     public ResponseEntity<?> addInventoryItem(@RequestBody AddInventoryItemRequest addInventoryItemRequest){
         try{
@@ -54,6 +55,7 @@ public class InventoryController {
         }
     }
 
+    //add quantity of item
     @PutMapping("/quantity/add/{itemId}")
     public ResponseEntity<?> addQuantity(@RequestBody UpdateQuantityRequest updateQuantityRequest, @PathVariable String itemId){
         try{

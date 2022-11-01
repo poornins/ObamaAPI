@@ -1,16 +1,14 @@
 package com.obamaapi.service;
 
 import com.obamaapi.dto.requests.AddInventoryItemRequest;
-import com.obamaapi.dto.requests.AddOrderRequest;
 import com.obamaapi.dto.requests.UpdateQuantityRequest;
 import com.obamaapi.dto.requests.UpdateReorderLevelRequest;
-import com.obamaapi.enums.MenuAvailability;
-import com.obamaapi.enums.OrderStatus;
 import com.obamaapi.model.*;
 import com.obamaapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -68,8 +66,9 @@ public class InventoryService {
         if(add){
             item.setQuantity(item.getQuantity() + updateQuantityRequest.getQuantity());
             inventoryRepository.save(item);
-            StaffAddInventory addInventory = new StaffAddInventory();
+            AddInventoryItems addInventory = new AddInventoryItems();
             addInventory.setInventoryItems(item);
+            addInventory.setUnitPrice(updateQuantityRequest.getUnitPrice());
             addInventory.setAddedQuantity(updateQuantityRequest.getQuantity());
             addInventory.setStaffDetails(staffRepository.findByUserDetails_UserId(updateQuantityRequest.getUserId()));
             addInventory.setDate(new Date());
@@ -80,7 +79,7 @@ public class InventoryService {
             item.setQuantity( item.getQuantity() - updateQuantityRequest.getQuantity());
             inventoryRepository.save(item);
 
-            StaffRetrieveInvetory retrieveInventory = new StaffRetrieveInvetory();
+            RetrieveInvetory retrieveInventory = new RetrieveInvetory();
             retrieveInventory.setInventoryItems(item);
             retrieveInventory.setRetrievedQuantity(updateQuantityRequest.getQuantity());
             retrieveInventory.setStaffDetails(staffRepository.findByUserDetails_UserId(updateQuantityRequest.getUserId()));

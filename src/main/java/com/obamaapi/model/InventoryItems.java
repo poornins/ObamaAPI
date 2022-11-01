@@ -26,11 +26,11 @@ public class InventoryItems {
     @Column (nullable = false)
     private float reorderLevel;
 
-    @OneToMany(targetEntity = StaffAddInventory.class, mappedBy = "inventoryItems", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = AddInventoryItems.class, mappedBy = "inventoryItems", cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<StaffAddInventory> staffAddInventories;
+    private Set<AddInventoryItems> staffAddInventories;
 
-    @OneToMany(targetEntity = StaffRetrieveInvetory.class, mappedBy = "inventoryItems", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = RetrieveInvetory.class, mappedBy = "inventoryItems", cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<StaffRetrieveInvetory> staffRetrieveInvetories;
+    private Set<RetrieveInvetory> staffRetrieveInvetories;
 }
