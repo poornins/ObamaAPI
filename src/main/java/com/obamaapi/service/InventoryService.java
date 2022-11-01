@@ -48,6 +48,7 @@ public class InventoryService {
         InventoryItems inventoryItem = new InventoryItems();
         inventoryItem.setItemName(addInventoryItemRequest.getItemName());
         inventoryItem.setReorderLevel(addInventoryItemRequest.getReOrderLevel());
+        inventoryItem.setUnit(addInventoryItemRequest.getInventoryUnits());
         inventoryItem.setQuantity(0.00F);
         return inventoryRepository.save(inventoryItem);
     }

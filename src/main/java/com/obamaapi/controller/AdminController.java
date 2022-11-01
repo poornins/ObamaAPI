@@ -52,10 +52,35 @@ public class AdminController {
     }
 
 //    -----------------REPORTS----------------------------------
+
+
     @GetMapping("/SalesReport/Daily/{date}")
     public ResponseEntity getSalesForDate(@PathVariable String date){
 
        return ResponseEntity.ok().body(salesService.getDailySales(date));
+
+    }
+
+    @GetMapping("/salesReport/period/{fromDate}/{toDate}")
+    public ResponseEntity getSalesForPeriod(@PathVariable String fromDate,@PathVariable String toDate){
+
+        return ResponseEntity.ok().body(salesService.getSalesPeriod(fromDate,toDate));
+
+    }
+
+//    @GetMapping("/salesReport/period/{forMonth}")
+//    public ResponseEntity getSalesForMonth(@PathVariable String fromDate,@PathVariable String toDate){
+//
+//        return ResponseEntity.ok().body(salesService.getSalesPeriod(fromDate,toDate));
+//
+//    }
+
+//    ----------------------Stores Reports----------------------------------
+
+    @GetMapping("/salesReport/daily/{fromDate}/{toDate}")
+    public ResponseEntity getStoresReportPeriod(@PathVariable String fromDate,@PathVariable String toDate){
+
+        return ResponseEntity.ok().body(salesService.getSalesPeriod(fromDate,toDate));
 
     }
 }

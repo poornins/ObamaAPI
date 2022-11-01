@@ -1,6 +1,7 @@
 package com.obamaapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.obamaapi.enums.InventoryUnits;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,9 @@ public class InventoryItems {
 
     @Column (nullable = false)
     private float reorderLevel;
+
+    @Enumerated(EnumType.STRING)
+    private InventoryUnits unit;
 
     @OneToMany(targetEntity = AddInventoryItems.class, mappedBy = "inventoryItems", cascade = CascadeType.ALL)
     @JsonIgnore
