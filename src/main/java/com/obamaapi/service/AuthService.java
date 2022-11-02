@@ -14,6 +14,9 @@ import com.obamaapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Service
 public class AuthService {
 
@@ -58,7 +61,7 @@ public class AuthService {
 
         customerDetails.setProfileStatus("TENTATIVE");
         customerDetails.setUserDetails(userDetails);
-
+        customerDetails.setDate(new Date());
         userRepository.save(userDetails);
         customerRepository.save(customerDetails);
     }

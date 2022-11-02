@@ -2,6 +2,7 @@ package com.obamaapi.controller;
 
 import com.obamaapi.dto.requests.AddMenuRequest;
 import com.obamaapi.model.MenuItems;
+import com.obamaapi.service.CustomerService;
 import com.obamaapi.service.OrderService;
 import com.obamaapi.service.SalesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class AdminController {
 
     @Autowired
     SalesService salesService;
+
+    @Autowired
+    CustomerService customerService;
 
     @PostMapping("/menu/add")
     public ResponseEntity addMenu(@RequestBody AddMenuRequest addMenuRequest){
@@ -81,6 +85,13 @@ public class AdminController {
     public ResponseEntity getStoresReport(){
 
         return ResponseEntity.ok().body(salesService.getDailyStores());
+
+    }
+
+    @GetMapping("/customer/counts")
+    public ResponseEntity getCustomerCount(){
+
+        return ResponseEntity.ok().body(customerService.getCustomerCount());
 
     }
 }
