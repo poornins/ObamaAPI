@@ -67,9 +67,9 @@ public class OrderService {
             List<MenuInstance> menuInstances=new ArrayList<>();
             for (OrderIncludesMenu orderIncludesMenu:orderIncludesMenuList){
                 MenuInstance menuInstance=new MenuInstance();
-                menuInstance.setMenuId(orderIncludesMenu.getMenuItems().getMenuId());
-                menuInstance.setMenuName(orderIncludesMenu.getMenuItems().getMenuName());
-                menuInstance.setQuantity(orderIncludesMenu.getQuantity());
+                menuInstance.setId(orderIncludesMenu.getMenuItems().getMenuId());
+                menuInstance.setName(orderIncludesMenu.getMenuItems().getMenuName());
+                menuInstance.setQty(orderIncludesMenu.getQuantity());
 
                 menuInstances.add(menuInstance);
             }
@@ -90,9 +90,9 @@ public class OrderService {
             List<MenuInstance> menuInstances=new ArrayList<>();
             for (OrderIncludesMenu orderIncludesMenu:orderIncludesMenuList){
                 MenuInstance menuInstance=new MenuInstance();
-                menuInstance.setMenuId(orderIncludesMenu.getMenuItems().getMenuId());
-                menuInstance.setMenuName(orderIncludesMenu.getMenuItems().getMenuName());
-                menuInstance.setQuantity(orderIncludesMenu.getQuantity());
+                menuInstance.setId(orderIncludesMenu.getMenuItems().getMenuId());
+                menuInstance.setName(orderIncludesMenu.getMenuItems().getMenuName());
+                menuInstance.setQty(orderIncludesMenu.getQuantity());
 
                 menuInstances.add(menuInstance);
             }
@@ -112,7 +112,7 @@ public class OrderService {
         menuRepository.save(menu);
     }
 
-    public void placeOrder(AddOrderRequest addOrderRequest){
+    public OrderDetails placeOrder(AddOrderRequest addOrderRequest){
         OrderDetails orderDetails = new OrderDetails();
         CustomerDetails customerDetails;
 
@@ -124,7 +124,8 @@ public class OrderService {
         orderDetails.setStatus(OrderStatus.PLACED);
         orderDetails.setCustomerDetails(customerDetails);
         //save in the database
-        orderRepository.save(orderDetails);
+       return orderRepository.save(orderDetails);
+
     }
 
     public void acceptOrder(long orderId){
@@ -144,11 +145,11 @@ public class OrderService {
 
         for (MenuInstance menuInstance : addOrderMenuRequest.getMenuInstances()){
 
-            MenuItems menuItems = menuRepository.findByMenuId(menuInstance.getMenuId());
+            MenuItems menuItems = menuRepository.findByMenuId(menuInstance.getId());
 
             OrderIncludesMenu orderMenu = new OrderIncludesMenu();
             orderMenu.setMenuItems(menuItems);
-            orderMenu.setQuantity(menuInstance.getQuantity());
+            orderMenu.setQuantity(menuInstance.getQty());
             orderMenu.setOrderDetails(orderDetails);
 
             orderIncludesMenuRepository.save(orderMenu);

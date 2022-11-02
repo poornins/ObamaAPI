@@ -17,8 +17,8 @@ public class OrderController {
 
     @PostMapping("/place/order")
     public ResponseEntity placeOrder(@RequestBody AddOrderRequest addOrderRequest){
-            orderService.placeOrder(addOrderRequest);
-            return ResponseEntity.ok().body("Order Added");
+
+            return ResponseEntity.ok().body(orderService.placeOrder(addOrderRequest));
     }
 
     @PostMapping("/add/menu instance")
