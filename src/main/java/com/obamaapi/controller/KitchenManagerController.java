@@ -3,6 +3,7 @@ package com.obamaapi.controller;
 import com.obamaapi.dto.responses.PlacedOrderResponse;
 import com.obamaapi.model.MenuItems;
 import com.obamaapi.service.OrderService;
+import com.obamaapi.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,9 @@ public class KitchenManagerController {
 
     @Autowired
     OrderService orderService;
+
+    @Autowired
+    StaffService staffService;
 
     @GetMapping("/order/requests")
     public ResponseEntity<?> getPlacedOrders(){
@@ -52,5 +56,12 @@ public class KitchenManagerController {
         if (acceptedOrderResponses.isEmpty()){
             return ResponseEntity.badRequest().body("No data");
         }else return ResponseEntity.ok().body(acceptedOrderResponses);
+    }
+
+    @GetMapping("/steward/available")
+    public ResponseEntity<?> getAvaialableSteward(){
+
+        return ResponseEntity.ok().body(staffService.getAvailableStewards());
+
     }
 }

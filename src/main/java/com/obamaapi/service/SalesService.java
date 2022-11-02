@@ -117,4 +117,19 @@ public class SalesService {
         dailyStoresResponse.setStoresInstances(storesInstances);
         return dailyStoresResponse;
     }
+
+    public List<PopularMenuResponse> getPopularMenuCounts(){
+
+        //get
+        List<OrderIncludesMenuRepository.DailyInstance> dailyInstances = orderIncludesMenuRepository.findPopularMenus();
+        List<PopularMenuResponse> popularMenuResponses = new ArrayList<>();
+        for (OrderIncludesMenuRepository.DailyInstance instance: dailyInstances){
+            PopularMenuResponse popularMenuResponse = new PopularMenuResponse();
+            popularMenuResponse.setLabel(menuRepository.findByMenuId(instance.getItemNo()).getMenuName());
+            popularMenuResponse.setValue(instance.getQuantity());
+            popularMenuResponses.add(popularMenuResponse);
+        }
+
+        return popularMenuResponses;
+    }
 }

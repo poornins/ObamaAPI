@@ -32,7 +32,7 @@ public class OrderDetails {
     private OrderStatus status;
 
     @Column (nullable = false)
-    private String amount;
+    private int amount;
 
     @ManyToOne
     @JsonIgnore

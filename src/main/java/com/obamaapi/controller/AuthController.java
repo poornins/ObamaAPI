@@ -54,12 +54,4 @@ public class AuthController {
         }
         return ResponseEntity.ok().body(authService.getCustomerUserId(contactNo));
     }
-
-//    @GetMapping("/getPatient/{patientNumber}")
-//    public ResponseEntity getPatientDetailsById(@PathVariable String patientNumber){
-//        Integer patientNo = Integer.parseInt(patientNumber);
-//        if(authService.checkIfIdExists(patientNo)==null){
-//            return ResponseEntity.badRequest().body("Patient Does Not Exists");
-//        }else return ResponseEntity.ok().body(authService.checkIfIdExists(patientNo));
-//    }
 }
