@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -19,6 +21,9 @@ public class CustomerDetails {
 
     @Column(nullable = true)
     private String address;
+
+    @CreationTimestamp
+    private Date date;
 
     @Column(nullable = false)
     private String profileStatus;
