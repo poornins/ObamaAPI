@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 public interface CustomerRepository extends JpaRepository<CustomerDetails, Long> {
     CustomerDetails findByUserDetails_UserId(long userId);
     CustomerDetails findByUserDetailsContactNumber(String contactNo);
-    @Query(value = "SELECT COUNT(customer_id) FROM `customer_details`;" , nativeQuery = true)
+    @Query(value = "SELECT COUNT(customer_id) FROM `customer_details`" , nativeQuery = true)
     int totalCustomerCount();
 
-    @Query(value = "SELECT COUNT(customer_id) FROM `customer_details`;" , nativeQuery = true)
-    int todayCustomerCount();
+    @Query(value = "SELECT COUNT(customer_id) FROM `customer_details` WHERE DATE(date)=?1" , nativeQuery = true)
+    int todayNewCustomerCount(String date);
 }
