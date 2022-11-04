@@ -4,6 +4,7 @@ import com.obamaapi.dto.requests.AddMenuRequest;
 import com.obamaapi.dto.requests.AddOrderMenuRequest;
 import com.obamaapi.dto.requests.AddOrderRequest;
 import com.obamaapi.dto.requests.MenuInstance;
+import com.obamaapi.dto.responses.OngoingOrderResponse;
 import com.obamaapi.dto.responses.PlacedOrderResponse;
 import com.obamaapi.enums.MenuAvailability;
 import com.obamaapi.enums.OrderStatus;
@@ -98,10 +99,34 @@ public class OrderService {
         }
         return placedOrderResponseList;
     }
+
+    public List<PlacedOrderResponse> getAssigned(){
+        List<OrderDetails> orderDetailsList=orderRepository.findAllByStatus(OrderStatus.ASSIGNED);
+        List<PlacedOrderResponse> acceptedOrders=new ArrayList<>();
+
+        for (OrderDetails order: orderDetailsList){
+            PlacedOrderResponse placedOrderResponse=new PlacedOrderResponse();
+            placedOrderResponse.setOrderId(order.getOrderId());
+            List<OrderIncludesMenu> orderIncludesMenuList=orderIncludesMenuRepository.findAllByOrderDetails_OrderId(order.getOrderId());
+            List<MenuInstance> menuInstances=new ArrayList<>();
+            for (OrderIncludesMenu orderIncludesMenu:orderIncludesMenuList){
+                MenuInstance menuInstance=new MenuInstance();
+                menuInstance.setId(orderIncludesMenu.getMenuItems().getMenuId());
+                menuInstance.setName(orderIncludesMenu.getMenuItems().getMenuName());
+                menuInstance.setQty(orderIncludesMenu.getQuantity());
+
+                menuInstances.add(menuInstance);
+            }
+            placedOrderResponse.setMenuInstances(menuInstances);
+            acceptedOrders.add(placedOrderResponse);
+        }
+        return acceptedOrders;
+    }
     public void assignOrder(long userId,long orderId){
         OrderDetails order = orderRepository.findByOrderId(orderId);
         StaffDetails staff = staffRepository.findByUserDetails_UserId(userId);
         order.setStaffDetails(staff);
+        order.setStatus(OrderStatus.ASSIGNED);
         orderRepository.save(order);
     }
 
@@ -141,6 +166,23 @@ public class OrderService {
         OrderDetails orderDetails = orderRepository.findByOrderId(orderId);
         orderDetails.setStatus(OrderStatus.PREPARED);
         orderRepository.save(orderDetails);
+    }
+
+    public List<OngoingOrderResponse> getOngoingOrders(){
+        List<OngoingOrderResponse> ongoingOrderResponses = new ArrayList<>();
+        List<OrderDetails> orderDetailsList = orderRepository.findAllByStatusIsNot(OrderStatus.COMPLETED);
+        for (OrderDetails order: orderDetailsList){
+            System.out.println(order.getOrderId());
+            OngoingOrderResponse ongoingOrderResponse=new OngoingOrderResponse();
+            ongoingOrderResponse.setOrderId(order.getOrderId());
+            ongoingOrderResponse.setOrderStatus(order.getStatus());
+            ongoingOrderResponse.setAmount(order.getAmount());
+            ongoingOrderResponse.setName("Customer - "  + order.getCustomerDetails().getCustomerId());
+            ongoingOrderResponse.setContactNo(order.getCustomerDetails().getUserDetails().getContactNumber());
+
+            ongoingOrderResponses.add(ongoingOrderResponse);
+        }
+        return ongoingOrderResponses;
     }
 
     public void addOrderMenu(AddOrderMenuRequest addOrderMenuRequest){

@@ -13,6 +13,7 @@ public interface OrderRepository extends JpaRepository<OrderDetails,Long> {
     OrderDetails findByOrderId (long orderId);
     List<OrderDetails> findAllByStatus(OrderStatus orderStatus);
     List<OrderDetails> findAllByStatusOrStatus(OrderStatus orderStatus,OrderStatus orderStatus2);
+    List<OrderDetails> findAllByStatusIsNot(OrderStatus status);
     List<OrderDetails> findAllByDate(Date date);
     @Query(value = "SELECT COUNT(order_id) FROM `order_details` WHERE DATE(date)=?1" , nativeQuery = true)
     int todayOrders(String date);
