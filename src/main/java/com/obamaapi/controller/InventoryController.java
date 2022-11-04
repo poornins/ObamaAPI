@@ -45,7 +45,6 @@ public class InventoryController {
         }
     }
 
-
     @GetMapping("/item/{itemId}")
     public ResponseEntity<?> getInventoryItem(@PathVariable String itemId){
         try{
@@ -65,6 +64,7 @@ public class InventoryController {
         }
     }
 
+    //retrieve
     @PutMapping("/quantity/consume/{itemId}")
     public ResponseEntity<?> ConsumeQuantity(@RequestBody UpdateQuantityRequest updateQuantityRequest, @PathVariable String itemId){
         try{

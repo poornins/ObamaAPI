@@ -49,6 +49,15 @@ public class AdminController {
             }else
             return ResponseEntity.badRequest().body("No items added");
     }
+
+    @GetMapping("/available/menulist/view")
+    public ResponseEntity getAvailableMenuList(){
+        List<MenuItems> menuItems = orderService.getAvailableMenus();
+        if (menuItems != null){
+            return ResponseEntity.ok().body(menuItems);
+        }else
+            return ResponseEntity.badRequest().body("No items available");
+    }
     @PutMapping("/menu/availability/{menuId}")
     public ResponseEntity updateAvailability(@PathVariable long menuId){
         try {
