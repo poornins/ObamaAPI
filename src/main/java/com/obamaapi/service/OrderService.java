@@ -102,6 +102,7 @@ public class OrderService {
         return placedOrderResponseList;
     }
 
+
     public void setAvailability(long menuId){
         MenuItems menu = menuRepository.findByMenuId(menuId);
         if(menu.getAvailability().equals(MenuAvailability.AVAILABLE)){

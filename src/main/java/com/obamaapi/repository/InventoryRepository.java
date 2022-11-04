@@ -13,5 +13,6 @@ public interface InventoryRepository extends JpaRepository<InventoryItems, Long>
    List<InventoryItems> findAllByItemNameContains(String query);
    List<InventoryItems> findAllByItemNameIsContaining(String query);
     InventoryItems findByItemId(Long id);
+    InventoryItems findByItemIdAndQuantityIsLessThan(long itemId,float reorderLevel);
 
 }

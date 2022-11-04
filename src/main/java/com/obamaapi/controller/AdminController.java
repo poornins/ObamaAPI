@@ -102,8 +102,8 @@ public class AdminController {
         return ResponseEntity.ok().body(salesService.getPopularMenuCounts());
     }
 
-    @GetMapping("/reorder/items ")
+    @GetMapping("/reorder/items")
     public ResponseEntity getReorderItems(){
-        return ResponseEntity.ok().body(salesService.getPopularMenuCounts());
+        return ResponseEntity.ok().body(inventoryService.getReorderItems());
     }
 }

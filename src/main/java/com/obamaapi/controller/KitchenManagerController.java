@@ -58,6 +58,19 @@ public class KitchenManagerController {
         }else return ResponseEntity.ok().body(acceptedOrderResponses);
     }
 
+    @GetMapping("/order/assign/{userId}")
+    public ResponseEntity<?> assignOrder(){
+        List<PlacedOrderResponse> preparedOrderResponse = orderService.getAccepted();
+//        for (PlacedOrderResponse placedOrderResponse:acceptedOrderResponses
+//        ) {
+//            System.out.println(placedOrderResponse.getOrderId());
+//        }
+//        if (acceptedOrderResponses.isEmpty()){
+//            return ResponseEntity.badRequest().body("No data");
+//        }else return ResponseEntity.ok().body(acceptedOrderResponses);
+            return ResponseEntity.ok().body("acceptedOrderResponses");
+    }
+
     @GetMapping("/steward/available")
     public ResponseEntity<?> getAvaialableSteward(){
 

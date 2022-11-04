@@ -3,12 +3,14 @@ package com.obamaapi.service;
 import com.obamaapi.dto.requests.AddInventoryItemRequest;
 import com.obamaapi.dto.requests.UpdateQuantityRequest;
 import com.obamaapi.dto.requests.UpdateReorderLevelRequest;
+import com.obamaapi.dto.responses.ReOrderResponse;
 import com.obamaapi.model.*;
 import com.obamaapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -99,5 +101,26 @@ public class InventoryService {
         return inventoryRepository.findAllByItemNameIsContaining(query.get());
         else
         return inventoryRepository.findAll();
+    }
+
+    public List<ReOrderResponse> getReorderItems() {
+        List<InventoryItems> inventoryItems = inventoryRepository.findAll();
+        List<ReOrderResponse> reOrderResponses = new ArrayList<>();
+        for (InventoryItems inventoryItem : inventoryItems){
+            ReOrderResponse reOrderResponse = new ReOrderResponse();
+            try {
+                InventoryItems items = inventoryRepository.findByItemIdAndQuantityIsLessThan(inventoryItem.getItemId(),inventoryItem.getReorderLevel());
+                reOrderResponse.setItemName(items.getItemName());
+                reOrderResponse.setItemId(items.getItemId());
+                reOrderResponse.setLevelAdd(items.getReorderLevel() - items.getQuantity());
+                reOrderResponse.setAvailQty(items.getQuantity());
+                reOrderResponse.setUnits(items.getUnit());
+                reOrderResponses.add(reOrderResponse);
+            }catch (Exception e){
+                continue;
+            }
+        }
+
+        return reOrderResponses;
     }
 }
