@@ -93,15 +93,14 @@ public class AuthService {
 
     public StaffLoginResponse staffLogin(StaffLogInRequest staffLogInRequest) {
         UserDetails userDetails = userRepository.findByEmail(staffLogInRequest.getEmail());
-        try {
-            staffRepository.findByUserDetails_EmailAndPassword(staffLogInRequest.getEmail(),staffLogInRequest.getPassword());
+        StaffDetails staffDetails =staffRepository.findByUserDetails_UserId(userDetails.getUserId());
+        if (staffDetails.getPassword().equals(staffLogInRequest.getPassword())){
             StaffLoginResponse staffLoginResponse = new StaffLoginResponse();
             staffLoginResponse.setUserId(userDetails.getUserId());
             staffLoginResponse.setRole(userDetails.getRole());
-
             return staffLoginResponse;
-        }catch (Exception e){
-            throw new RuntimeException("Login Credentials are invalid");
+        }else{
+            throw new RuntimeException("Invalid Password");
         }
     }
 

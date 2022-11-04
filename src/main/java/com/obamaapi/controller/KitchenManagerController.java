@@ -58,10 +58,17 @@ public class KitchenManagerController {
         }else return ResponseEntity.ok().body(acceptedOrderResponses);
     }
 
+    @GetMapping("/order/assign/{userId}/{orderId}")
+    public ResponseEntity<?> assignOrder(@PathVariable long userId, @PathVariable long orderId){
+        orderService.assignOrder(userId,orderId);
+        return ResponseEntity.ok().body("Order Assigned");
+    }
+
     @GetMapping("/steward/available")
     public ResponseEntity<?> getAvaialableSteward(){
 
         return ResponseEntity.ok().body(staffService.getAvailableStewards());
 
     }
+
 }

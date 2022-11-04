@@ -12,4 +12,5 @@ public interface UserRepository extends JpaRepository<UserDetails, Long> {
     UserDetails findByContactNumber(String ContactNumber);
     UserDetails findByContactNumberAndRole(String ContactNumber, Roles roles);
     List<UserDetails> findAllByRole(Roles roles);
+    UserDetails findByUserId(long userId);
 }

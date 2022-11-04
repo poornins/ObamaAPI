@@ -4,17 +4,12 @@ import com.obamaapi.dto.requests.AddMenuRequest;
 import com.obamaapi.dto.requests.AddOrderMenuRequest;
 import com.obamaapi.dto.requests.AddOrderRequest;
 import com.obamaapi.dto.requests.MenuInstance;
+import com.obamaapi.dto.responses.OngoingOrderResponse;
 import com.obamaapi.dto.responses.PlacedOrderResponse;
 import com.obamaapi.enums.MenuAvailability;
 import com.obamaapi.enums.OrderStatus;
-import com.obamaapi.model.CustomerDetails;
-import com.obamaapi.model.MenuItems;
-import com.obamaapi.model.OrderDetails;
-import com.obamaapi.model.OrderIncludesMenu;
-import com.obamaapi.repository.CustomerRepository;
-import com.obamaapi.repository.MenuRepository;
-import com.obamaapi.repository.OrderIncludesMenuRepository;
-import com.obamaapi.repository.OrderRepository;
+import com.obamaapi.model.*;
+import com.obamaapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +27,9 @@ public class OrderService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private StaffRepository staffRepository;
 
     @Autowired
     private OrderIncludesMenuRepository orderIncludesMenuRepository;
@@ -102,6 +100,36 @@ public class OrderService {
         return placedOrderResponseList;
     }
 
+    public List<PlacedOrderResponse> getAssigned(){
+        List<OrderDetails> orderDetailsList=orderRepository.findAllByStatus(OrderStatus.ASSIGNED);
+        List<PlacedOrderResponse> acceptedOrders=new ArrayList<>();
+
+        for (OrderDetails order: orderDetailsList){
+            PlacedOrderResponse placedOrderResponse=new PlacedOrderResponse();
+            placedOrderResponse.setOrderId(order.getOrderId());
+            List<OrderIncludesMenu> orderIncludesMenuList=orderIncludesMenuRepository.findAllByOrderDetails_OrderId(order.getOrderId());
+            List<MenuInstance> menuInstances=new ArrayList<>();
+            for (OrderIncludesMenu orderIncludesMenu:orderIncludesMenuList){
+                MenuInstance menuInstance=new MenuInstance();
+                menuInstance.setId(orderIncludesMenu.getMenuItems().getMenuId());
+                menuInstance.setName(orderIncludesMenu.getMenuItems().getMenuName());
+                menuInstance.setQty(orderIncludesMenu.getQuantity());
+
+                menuInstances.add(menuInstance);
+            }
+            placedOrderResponse.setMenuInstances(menuInstances);
+            acceptedOrders.add(placedOrderResponse);
+        }
+        return acceptedOrders;
+    }
+    public void assignOrder(long userId,long orderId){
+        OrderDetails order = orderRepository.findByOrderId(orderId);
+        StaffDetails staff = staffRepository.findByUserDetails_UserId(userId);
+        order.setStaffDetails(staff);
+        order.setStatus(OrderStatus.ASSIGNED);
+        orderRepository.save(order);
+    }
+
     public void setAvailability(long menuId){
         MenuItems menu = menuRepository.findByMenuId(menuId);
         if(menu.getAvailability().equals(MenuAvailability.AVAILABLE)){
@@ -134,10 +162,33 @@ public class OrderService {
         orderRepository.save(orderDetails);
     }
 
+    public void acceptPayment(long orderId){
+        OrderDetails orderDetails = orderRepository.findByOrderId(orderId);
+        orderDetails.setStatus(OrderStatus.COMPLETED);
+        orderRepository.save(orderDetails);
+    }
+
     public void prepareOrder(long orderId){
         OrderDetails orderDetails = orderRepository.findByOrderId(orderId);
         orderDetails.setStatus(OrderStatus.PREPARED);
         orderRepository.save(orderDetails);
+    }
+
+    public List<OngoingOrderResponse> getOngoingOrders(){
+        List<OngoingOrderResponse> ongoingOrderResponses = new ArrayList<>();
+        List<OrderDetails> orderDetailsList = orderRepository.findAllByStatusIsNot(OrderStatus.COMPLETED);
+        for (OrderDetails order: orderDetailsList){
+            System.out.println(order.getOrderId());
+            OngoingOrderResponse ongoingOrderResponse=new OngoingOrderResponse();
+            ongoingOrderResponse.setOrderId(order.getOrderId());
+            ongoingOrderResponse.setOrderStatus(order.getStatus());
+            ongoingOrderResponse.setAmount(order.getAmount());
+            ongoingOrderResponse.setName("Customer - "  + order.getCustomerDetails().getCustomerId());
+            ongoingOrderResponse.setContactNo(order.getCustomerDetails().getUserDetails().getContactNumber());
+
+            ongoingOrderResponses.add(ongoingOrderResponse);
+        }
+        return ongoingOrderResponses;
     }
 
     public void addOrderMenu(AddOrderMenuRequest addOrderMenuRequest){
