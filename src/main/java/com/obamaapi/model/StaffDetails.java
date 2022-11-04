@@ -36,4 +36,8 @@ public class StaffDetails {
     @OneToMany(targetEntity = RetrieveInvetory.class, mappedBy = "staffDetails", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<RetrieveInvetory> staffRetrieveInvetories;
+
+    @OneToMany(targetEntity = OrderDetails.class, mappedBy = "staffDetails", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<OrderDetails> staffAssignedOrders;
 }

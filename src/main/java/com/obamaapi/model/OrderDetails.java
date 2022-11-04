@@ -38,6 +38,10 @@ public class OrderDetails {
     @JsonIgnore
     private CustomerDetails customerDetails;
 
+    @ManyToOne
+    @JsonIgnore
+    private StaffDetails staffDetails;
+
     @OneToMany(targetEntity = OrderIncludesMenu.class, mappedBy = "orderDetails", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<OrderIncludesMenu> orderIncludesMenus;

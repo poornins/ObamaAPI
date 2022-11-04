@@ -7,14 +7,8 @@ import com.obamaapi.dto.requests.MenuInstance;
 import com.obamaapi.dto.responses.PlacedOrderResponse;
 import com.obamaapi.enums.MenuAvailability;
 import com.obamaapi.enums.OrderStatus;
-import com.obamaapi.model.CustomerDetails;
-import com.obamaapi.model.MenuItems;
-import com.obamaapi.model.OrderDetails;
-import com.obamaapi.model.OrderIncludesMenu;
-import com.obamaapi.repository.CustomerRepository;
-import com.obamaapi.repository.MenuRepository;
-import com.obamaapi.repository.OrderIncludesMenuRepository;
-import com.obamaapi.repository.OrderRepository;
+import com.obamaapi.model.*;
+import com.obamaapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +26,9 @@ public class OrderService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private StaffRepository staffRepository;
 
     @Autowired
     private OrderIncludesMenuRepository orderIncludesMenuRepository;
@@ -101,7 +98,12 @@ public class OrderService {
         }
         return placedOrderResponseList;
     }
-
+    public void assignOrder(long userId,long orderId){
+        OrderDetails order = orderRepository.findByOrderId(orderId);
+        StaffDetails staff = staffRepository.findByUserDetails_UserId(userId);
+        order.setStaffDetails(staff);
+        orderRepository.save(order);
+    }
 
     public void setAvailability(long menuId){
         MenuItems menu = menuRepository.findByMenuId(menuId);
