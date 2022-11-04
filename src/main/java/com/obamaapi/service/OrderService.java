@@ -162,6 +162,12 @@ public class OrderService {
         orderRepository.save(orderDetails);
     }
 
+    public void acceptPayment(long orderId){
+        OrderDetails orderDetails = orderRepository.findByOrderId(orderId);
+        orderDetails.setStatus(OrderStatus.COMPLETED);
+        orderRepository.save(orderDetails);
+    }
+
     public void prepareOrder(long orderId){
         OrderDetails orderDetails = orderRepository.findByOrderId(orderId);
         orderDetails.setStatus(OrderStatus.PREPARED);
