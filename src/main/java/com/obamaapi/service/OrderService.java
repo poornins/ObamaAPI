@@ -54,6 +54,11 @@ public class OrderService {
         return menuItemsList;
     }
 
+    public List<MenuItems> getAvailableMenus(){
+        List<MenuItems> menuItemsList = menuRepository.findAllByAvailability(MenuAvailability.AVAILABLE);
+        return menuItemsList;
+    }
+
     public List<PlacedOrderResponse> getPlacedOrders(){
         List<OrderDetails> orderDetailsList=orderRepository.findAllByStatus(OrderStatus.PLACED);
         List<PlacedOrderResponse> placedOrderResponseList=new ArrayList<>();
