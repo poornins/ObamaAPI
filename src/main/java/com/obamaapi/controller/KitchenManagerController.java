@@ -1,5 +1,6 @@
 package com.obamaapi.controller;
 
+import com.obamaapi.dto.responses.GetAvailStewResponse;
 import com.obamaapi.dto.responses.PlacedOrderResponse;
 import com.obamaapi.model.MenuItems;
 import com.obamaapi.service.OrderService;
@@ -58,14 +59,14 @@ public class KitchenManagerController {
         }else return ResponseEntity.ok().body(acceptedOrderResponses);
     }
 
-    @GetMapping("/order/assign/{userId}/{orderId}")
-    public ResponseEntity<?> assignOrder(@PathVariable long userId, @PathVariable long orderId){
-        orderService.assignOrder(userId,orderId);
+    @PutMapping("/order/assign/{staffId}/{orderId}")
+    public ResponseEntity<?> assignOrder(@PathVariable long staffId, @PathVariable long orderId){
+        orderService.assignOrder(staffId,orderId);
         return ResponseEntity.ok().body("Order Assigned");
     }
 
     @GetMapping("/steward/available")
-    public ResponseEntity<?> getAvaialableSteward(){
+    public ResponseEntity<List<GetAvailStewResponse>> getAvaialableSteward(){
 
         return ResponseEntity.ok().body(staffService.getAvailableStewards());
 
