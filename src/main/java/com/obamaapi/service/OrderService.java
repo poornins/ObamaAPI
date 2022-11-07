@@ -66,6 +66,7 @@ public class OrderService {
         for (OrderDetails order: orderDetailsList){
             PlacedOrderResponse placedOrderResponse=new PlacedOrderResponse();
             placedOrderResponse.setOrderId(order.getOrderId());
+            placedOrderResponse.setStatus(order.getStatus());
             List<OrderIncludesMenu> orderIncludesMenuList=orderIncludesMenuRepository.findAllByOrderDetails_OrderId(order.getOrderId());
             List<MenuInstance> menuInstances=new ArrayList<>();
             for (OrderIncludesMenu orderIncludesMenu:orderIncludesMenuList){
@@ -89,6 +90,7 @@ public class OrderService {
         for (OrderDetails order: orderDetailsList){
             PlacedOrderResponse placedOrderResponse=new PlacedOrderResponse();
             placedOrderResponse.setOrderId(order.getOrderId());
+            placedOrderResponse.setStatus(order.getStatus());
             List<OrderIncludesMenu> orderIncludesMenuList=orderIncludesMenuRepository.findAllByOrderDetails_OrderId(order.getOrderId());
             List<MenuInstance> menuInstances=new ArrayList<>();
             for (OrderIncludesMenu orderIncludesMenu:orderIncludesMenuList){
@@ -127,9 +129,9 @@ public class OrderService {
         }
         return acceptedOrders;
     }
-    public void assignOrder(long userId,long orderId){
+    public void assignOrder(long staffId,long orderId){
         OrderDetails order = orderRepository.findByOrderId(orderId);
-        StaffDetails staff = staffRepository.findByUserDetails_UserId(userId);
+        StaffDetails staff = staffRepository.findByStaffId(staffId);
         order.setStaffDetails(staff);
         order.setStatus(OrderStatus.ASSIGNED);
         orderRepository.save(order);

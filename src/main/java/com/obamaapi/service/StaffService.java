@@ -1,6 +1,7 @@
 package com.obamaapi.service;
 
 import com.obamaapi.dto.responses.AvailableStewardsResponse;
+import com.obamaapi.dto.responses.GetAvailStewResponse;
 import com.obamaapi.enums.Roles;
 import com.obamaapi.enums.StaffAvailability;
 import com.obamaapi.model.StaffDetails;
@@ -23,9 +24,19 @@ public class StaffService {
     @Autowired
     private StaffRepository staffRepository;
 
-    public List<StaffDetails> getAvailableStewards(){
+    public List<GetAvailStewResponse> getAvailableStewards(){
         try {
-            return staffRepository.findAllByAvailabilityAndUserDetails_Role(StaffAvailability.AVAILABLE,Roles.STEWARD);
+            List<GetAvailStewResponse> availStewResponses = new ArrayList<>();
+
+            List<StaffDetails> staffDetails = staffRepository.findAllByAvailabilityAndUserDetails_Role(StaffAvailability.AVAILABLE,Roles.STEWARD);
+            for (StaffDetails details:staffDetails){
+                GetAvailStewResponse getAvailStewResponse = new GetAvailStewResponse();
+                getAvailStewResponse.setStaffId(details.getStaffId());
+                getAvailStewResponse.setFirstName(details.getUserDetails().getFirstName());
+
+                availStewResponses.add(getAvailStewResponse);
+            }
+            return availStewResponses;
         }catch (Exception e){
             throw new RuntimeException("Stewards Unavailable");
         }
