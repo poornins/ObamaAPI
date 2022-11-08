@@ -4,6 +4,7 @@ import com.obamaapi.dto.requests.AddMenuRequest;
 import com.obamaapi.dto.requests.AddOrderMenuRequest;
 import com.obamaapi.dto.requests.AddOrderRequest;
 import com.obamaapi.dto.requests.MenuInstance;
+import com.obamaapi.dto.responses.AssignedOrderResponse;
 import com.obamaapi.dto.responses.OngoingOrderResponse;
 import com.obamaapi.dto.responses.PlacedOrderResponse;
 import com.obamaapi.enums.MenuAvailability;
@@ -107,25 +108,16 @@ public class OrderService {
         return placedOrderResponseList;
     }
 
-    public List<PlacedOrderResponse> getAssigned(){
+    public List<AssignedOrderResponse> getAssigned(){
         List<OrderDetails> orderDetailsList=orderRepository.findAllByStatus(OrderStatus.ASSIGNED);
-        List<PlacedOrderResponse> acceptedOrders=new ArrayList<>();
+        List<AssignedOrderResponse> acceptedOrders=new ArrayList<>();
 
         for (OrderDetails order: orderDetailsList){
-            PlacedOrderResponse placedOrderResponse=new PlacedOrderResponse();
-            placedOrderResponse.setOrderId(order.getOrderId());
-            List<OrderIncludesMenu> orderIncludesMenuList=orderIncludesMenuRepository.findAllByOrderDetails_OrderId(order.getOrderId());
-            List<MenuInstance> menuInstances=new ArrayList<>();
-            for (OrderIncludesMenu orderIncludesMenu:orderIncludesMenuList){
-                MenuInstance menuInstance=new MenuInstance();
-                menuInstance.setId(orderIncludesMenu.getMenuItems().getMenuId());
-                menuInstance.setName(orderIncludesMenu.getMenuItems().getMenuName());
-                menuInstance.setQty(orderIncludesMenu.getQuantity());
-
-                menuInstances.add(menuInstance);
-            }
-            placedOrderResponse.setMenuInstances(menuInstances);
-            acceptedOrders.add(placedOrderResponse);
+            AssignedOrderResponse assignedOrderResponse=new AssignedOrderResponse();
+            assignedOrderResponse.setOrderId(order.getOrderId());
+            assignedOrderResponse.setAmount(order.getAmount());
+            assignedOrderResponse.setContactNo(order.getCustomerDetails().getUserDetails().getContactNumber());
+            acceptedOrders.add(assignedOrderResponse);
         }
         return acceptedOrders;
     }
