@@ -1,6 +1,7 @@
 package com.obamaapi.controller;
 
 import com.obamaapi.dto.requests.AddOrderMenuRequest;
+import com.obamaapi.dto.responses.AssignedOrderResponse;
 import com.obamaapi.dto.responses.PlacedOrderResponse;
 import com.obamaapi.repository.OrderRepository;
 import com.obamaapi.service.CustomerService;
@@ -27,11 +28,7 @@ public class CashierController {
 
     @GetMapping("/order/assigned")
     public ResponseEntity<?> getAssignedOrders(){
-        List<PlacedOrderResponse> assignedOrders = orderService.getAssigned();
-        for (PlacedOrderResponse placedOrderResponse:assignedOrders
-        ) {
-            System.out.println(placedOrderResponse.getOrderId());
-        }
+        List<AssignedOrderResponse> assignedOrders = orderService.getAssigned();
         if (assignedOrders.isEmpty()){
             return ResponseEntity.badRequest().body("No data");
         }else return ResponseEntity.ok().body(assignedOrders);
